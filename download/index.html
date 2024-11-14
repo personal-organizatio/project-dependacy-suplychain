@@ -1,13 +1,40 @@
-<!-- ...existing code... -->
-<script>
-  window.onload = function() {
-    const textFileContent = 'This is the content of the text file.';
-    const blob = new Blob([textFileContent], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'generated-file.txt';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Fetcher</title>
+</head>
+<body>
+  <script>
+    window.onload = function() {
+      const currentUrl = window.location.href;
+      if (currentUrl === 'https://personal-organizatio.github.io/project-dependacy-suplychain/download' ||
+          currentUrl === 'https://personal-organizatio.github.io/project-dependacy-suplychain/download/index.html') {
+        document.body.innerHTML = '<h1>404 - Page Not Found</h1>';
+        return;
+      }
+      const urlParams = new URLSearchParams(window.location.search);
+      const jsonData = urlParams.get('data');
+      if (jsonData) {
+        try {
+          const decodedData = decodeURIComponent(jsonData);
+          const parsedData = JSON.parse(decodedData);
+          const textFileContent = JSON.stringify(parsedData, null, 2);
+          const blob = new Blob([textFileContent], { type: 'text/plain' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'data.txt';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (error) {
+          console.error('Invalid JSON data:', error);
+        }
+      } else {
+        console.error('No JSON data provided in URL');
+      }
+    };
+  </script>
+</body>
+</html>

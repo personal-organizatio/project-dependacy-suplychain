@@ -27,9 +27,9 @@
                             const sanitizedVersion = version.replace(/[^\d.]/g, '');
                             const encodedName = encodeURIComponent(name).replace(/%40/g, '%2540').replace(/%2F/g, '%252F');
                             const encodedName2 = encodeURIComponent(name).replace(/%40/g, '%40').replace(/%2F/g, '%2F');
-                            const url = `https://npm.anvaka.com/#/view/2d/${encodedName}/${sanitizedVersion}`;
+                            const url = `https://npm.anvaka.com/#/view/2d/${encodedName}`;
                             const url2 = `https://npmgraph.js.org/?q=${encodedName2}#color=outdated`;
-                            return `<p >${name}@${version}</p> <iframe src="${url}" width="50%" height="800px" frameborder="0"></iframe>  <iframe src="${url2}" width="50%" height="800px" frameborder="0"></iframe>`;
+                            return `<p >${name}</p> <iframe src="${url}" width="50%" height="800px" frameborder="0"></iframe>  <iframe src="${url2}" width="50%" height="800px" frameborder="0"></iframe>`;
                         };
 
                         const displayDependencies = (deps, title) => {
@@ -45,6 +45,14 @@
 
                         displayDependencies(dependencies, 'Dependencies');
                         displayDependencies(devDependencies, 'Dev Dependencies');
+
+                        // Encode JSON data and create a download link
+                        const encodedData = encodeURIComponent(JSON.stringify(packageJson));
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = `download/index.html?data=${encodedData}`;
+                        downloadLink.textContent = 'Download JSON as Text File';
+                        output.appendChild(downloadLink);
+
                     } catch (error) {
                         document.getElementById('output').textContent = 'Invalid JSON file';
                     }
