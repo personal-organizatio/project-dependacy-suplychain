@@ -1,0 +1,13 @@
+<!-- ...existing code... -->
+<script>
+  window.onload = function() {
+    const textFileContent = 'This is the content of the text file.';
+    const blob = new Blob([textFileContent], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'generated-file.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+</script>
